@@ -1,0 +1,518 @@
+<html><head><style>button, p, h4{
+  font-family: 'Open Sans', sans-serif;
+  letter-spacing: 1px;
+}
+
+button{
+  outline: none;
+  background: transparent;
+  border: none;
+}
+
+#app{
+  width: 650px;
+  min-width: 650px;
+  margin: 10px auto;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+header h1{
+  font-family: 'Permanent Marker', cursive;
+  width: 100%;
+  text-align: center;
+  color: #474747;
+  font-size: 53px;
+  margin-bottom: 0;
+}
+
+header h4{
+  width: 100%;
+  text-align: center;
+  margin-top: 0px;
+  margin-bottom: 30px;
+  font-size: 10px;
+}
+
+.tools{
+  background-color: #E8175D;
+  display: flex;
+  justify-content: space-around;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.tools button{
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+  border: 1px solid white;
+  height: 24px;
+  margin: auto 0;
+  border-radius: 2px;
+}
+
+.tools button:hover{
+  background-color: white;
+  color: #E8175D;
+  border: 1px solid white;
+}
+
+.padrows {
+  position: relative;
+}
+
+.padrows select{
+  margin-right: 10px;
+}
+
+.delete{
+  
+  margin-left: 4px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  border: 1px solid black;
+  height: 22px;
+}
+.clear{
+  border: 1px solid black;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.clear:hover, .delete:hover{
+  background-color: black;
+  color: white;
+  border: 1px solid black;
+}
+
+.drumpad, .drumpad-active{
+  background: #A8A7A8;
+  width: 50px;
+  height: 50px;
+  margin: 4px 4px;
+  border-radius: 3px;
+}
+
+.drumpad:nth-child(4n - 2), 
+.drumpad-active:nth-child(4n-2){
+  border-left: 4px solid #474747;
+  margin-left: 5px;
+}
+
+.drumpad-active{
+  background: #E8175D;
+}
+
+.drumpad-active {
+  animation: 100ms ease-in 0ms 1 bounce;
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.88);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.row {
+  margin: 5px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#addrow{
+  color: #E8175D;
+  margin-left: 40px;
+  display: block;
+  padding: 5px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+
+.drumpad:hover {
+  cursor: pointer;
+}
+
+.column-container {
+  position: absolute;
+  top: 0;
+  left: 72px;
+  bottom: 0;
+  /* background-color: blue; */
+  z-index: -1;
+  display: flex;
+  justify-content: center;
+  width: 77%;
+}
+
+.column:nth-child(4n-3){
+  border-left: 5px solid transparent;
+  margin-left: 1px;
+}
+
+.column {
+  width: 56px;
+  height: 100%;
+  float: left;
+  background: transparent;
+  /* background-color: green; */
+  margin: 0px 1px;
+  border-radius: 2px;
+}
+
+.active {
+  background: gray;
+}
+
+#bpm-slider{
+  display: flex;
+}
+
+#bpm-slider input{
+  margin-right: 10px;
+}
+
+#bpm-slider p{
+  width: 45px;
+  color: white;
+  font-size: 14px;
+}
+
+footer{
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  border-top: 1px solid #474747;
+  margin-top: 22px;
+}
+
+footer p{
+  height: 20px;
+  margin-top: 4px;
+}</style></head><body><script>window.onload = function () {
+  var $$adom_state = {"styles":"button, p, h4{\n  font-family: 'Open Sans', sans-serif;\n  letter-spacing: 1px;\n}\n\nbutton{\n  outline: none;\n  background: transparent;\n  border: none;\n}\n\n#app{\n  width: 650px;\n  min-width: 650px;\n  margin: 10px auto;\n  border-radius: 10px;\n  padding: 10px;\n}\n\nheader h1{\n  font-family: 'Permanent Marker', cursive;\n  width: 100%;\n  text-align: center;\n  color: #474747;\n  font-size: 53px;\n  margin-bottom: 0;\n}\n\nheader h4{\n  width: 100%;\n  text-align: center;\n  margin-top: 0px;\n  margin-bottom: 30px;\n  font-size: 10px;\n}\n\n.tools{\n  background-color: #E8175D;\n  display: flex;\n  justify-content: space-around;\n  border-radius: 4px;\n  margin-bottom: 10px;\n}\n\n.tools button{\n  color: white;\n  cursor: pointer;\n  font-size: 12px;\n  border: 1px solid white;\n  height: 24px;\n  margin: auto 0;\n  border-radius: 2px;\n}\n\n.tools button:hover{\n  background-color: white;\n  color: #E8175D;\n  border: 1px solid white;\n}\n\n.padrows {\n  position: relative;\n}\n\n.padrows select{\n  margin-right: 10px;\n}\n\n.delete{\n  \n  margin-left: 4px;\n  background: transparent;\n  cursor: pointer;\n  font-size: 13px;\n  border: 1px solid black;\n  height: 22px;\n}\n.clear{\n  border: 1px solid black;\n  cursor: pointer;\n  margin-left: 8px;\n}\n\n.clear:hover, .delete:hover{\n  background-color: black;\n  color: white;\n  border: 1px solid black;\n}\n\n.drumpad, .drumpad-active{\n  background: #A8A7A8;\n  width: 50px;\n  height: 50px;\n  margin: 4px 4px;\n  border-radius: 3px;\n}\n\n.drumpad:nth-child(4n - 2), \n.drumpad-active:nth-child(4n-2){\n  border-left: 4px solid #474747;\n  margin-left: 5px;\n}\n\n.drumpad-active{\n  background: #E8175D;\n}\n\n.drumpad-active {\n  animation: 100ms ease-in 0ms 1 bounce;\n}\n\n@keyframes bounce {\n  0% {\n    transform: scale(1);\n  }\n  50% {\n    transform: scale(0.88);\n  }\n  100% {\n    transform: scale(1);\n  }\n}\n\n.row {\n  margin: 5px 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n#addrow{\n  color: #E8175D;\n  margin-left: 40px;\n  display: block;\n  padding: 5px;\n  background: transparent;\n  cursor: pointer;\n  font-size: 12px;\n}\n\n\n.drumpad:hover {\n  cursor: pointer;\n}\n\n.column-container {\n  position: absolute;\n  top: 0;\n  left: 72px;\n  bottom: 0;\n  /* background-color: blue; */\n  z-index: -1;\n  display: flex;\n  justify-content: center;\n  width: 77%;\n}\n\n.column:nth-child(4n-3){\n  border-left: 5px solid transparent;\n  margin-left: 1px;\n}\n\n.column {\n  width: 56px;\n  height: 100%;\n  float: left;\n  background: transparent;\n  /* background-color: green; */\n  margin: 0px 1px;\n  border-radius: 2px;\n}\n\n.active {\n  background: gray;\n}\n\n#bpm-slider{\n  display: flex;\n}\n\n#bpm-slider input{\n  margin-right: 10px;\n}\n\n#bpm-slider p{\n  width: 45px;\n  color: white;\n  font-size: 14px;\n}\n\nfooter{\n  display: flex;\n  justify-content: space-between;\n  font-size: 10px;\n  border-top: 1px solid #474747;\n  margin-top: 22px;\n}\n\nfooter p{\n  height: 20px;\n  margin-top: 4px;\n}","state":{"tapped":[[false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false]],"instruments":[],"names":["kick","snare","hi-hat"],"bpm":130,"isPlaying":false,"currentColumn":-1}};
+  
+  var $$processed = [];
+  var $$firstSync = true;
+  var $$props = [];
+
+  function $$push_props (props) {
+    $$props.push(props);
+  }
+
+  function $$pop_props () {
+    $$props.pop();
+  }
+
+  function $$addEventListeners (node, events) {
+      var keys = Object.keys(events);
+      if (!node.__eventRefs) node.__eventRefs = {};
+      keys.forEach(function (event) {
+          if (node.__eventRefs[event]) {
+            node.removeEventListener(event, node.__eventRefs[event]);
+          }
+          node.addEventListener(event, events[event]);
+          node.__eventRefs[event] = events[event];
+      })
+  }
+
+  function $$if (cond, condIf, condElse) {
+      if (cond) condIf();
+      else if (condElse) condElse();
+  }
+
+  function $$each (list, fn) {
+      if (Array.isArray(list)) {
+          for (var i = 0; i < list.length; i++) {
+              fn(list[i], i);
+          }
+      } else if (typeof list === 'object') {
+          var keys = Object.keys(list);
+          for (var i = 0; i < keys.length; i++) {
+              fn(keys[i], list[keys[i]]);
+          }
+      } else {
+          throw new Error(list + ' is not iterable');
+      }
+  }
+
+  function $$clean (node) {
+      var num = $$processed[$$processed.length - 1];
+      while (node.childNodes[num]) {
+          var out = node.childNodes[num];
+          if (out.__adomState && out.__adomState.unmount) {
+            out.__adomState.unmount();
+          }
+          node.removeChild(out);
+      }
+  }
+
+  function $$create (type, props, events, state) {
+      var node;
+      if (type === 'text') node = document.createTextNode(props(state));
+      else {
+          node = document.createElement(type);
+          $$attr(node, props(state));
+      }
+      if (state) {
+        node.__adomState = state;
+        if (state.mount) {
+          state.mount();
+        }
+      }
+      if (events) $$addEventListeners(node, events);
+      return node;
+  }
+
+  function $$attr (node, props) {
+      Object.keys(props).forEach(function (p) {
+          var a = props[p];
+          if (p === 'events') return;
+          var v = (a && a.constructor === Array) ? a.join(' ') : a;
+          if (p in node) {
+              node[p] = v;
+          } else if (v === false || v == null) {
+              node.removeAttribute(at);
+          } else {
+              node.setAttribute(p, v);
+          }
+      });
+  }
+
+  function $$class (C, obj) {
+    if (!C) return obj;
+    var i = new C();
+    Object.keys(obj).forEach(function (k) {
+      i[k] = obj[k];
+    });
+    return i;
+  }
+
+  function $$e (par, type, props, events, state, children) {
+      var index = $$processed[$$processed.length - 1]++;
+      var node = par.childNodes[index];
+      if (!node) {
+          node = $$create(type, props, events, state);
+          par.appendChild(node);
+      } else if (type === 'text' && node.nodeType === Node.TEXT_NODE) {
+          node.nodeValue = props(node.__adomState || state);
+      } else if (node.tagName && (type === node.tagName.toLowerCase())) {
+          if (state && !node.__adomState) node.__adomState = state;
+          $$attr(node, props(node.__adomState));
+          if (events) $$addEventListeners(node, events);
+      } else {
+          var out = node;
+          node = $$create(type, props, events, state);
+          if (out.__adomState && out.__adomState.unmount) {
+            out.__adomState.unmount();
+          }
+          par.replaceChild(node, out);
+      }
+      if (children) {
+          $$processed.push(0);
+          children(node, node.__adomState || null);
+          $$clean(node);
+          $$processed.pop();
+      }
+  }
+  
+  (function (styles, state) {
+  
+  function $sync() {
+      var par = window["adom-root-1524"];
+      var $ = undefined;
+      //console.time('sync');
+      $$processed.push(0);
+      $$push_props({});
+    $$e(par, "div", function ($) { return (function () { return {}; }).call($, ); }, null, $$class(typeof DrumPad === 'function' ? DrumPad : null, {}), function (par, $) { (function () {
+        $$e(par, "header", function ($) { return (function () { return {}; }).call($, ); }, null, null, function (par) { (function () {
+            $$e(par, "h1", function ($) { return (function () { return {}; }).call($, ); }, null, null, function (par) { (function () {
+                $$e(par, "text", function () { return "BeatZ"; })
+            })(); });
+            $$e(par, "h4", function ($) { return (function () { return {}; }).call($, ); }, null, null, function (par) { (function () {
+                $$e(par, "text", function () { return "By Jon Franco"; })
+            })(); });
+        })(); });
+        $$e(par, "div", function ($) { return (function () { return {"class": ["tools"]}; }).call($, ); }, null, null, function (par) { (function () {
+            $$e(par, "button", function ($) { return (function () { return {}; }).call($, ); }, {"click": function ($e) { (function ($) { (function () { togglePlay(state.isPlaying); { }; $sync() }).call($) })($e.target.__adomState || $); }}, null, function (par) { (function () {
+                $$e(par, "text", function () { return "" + (state["isPlaying"] ? "Stop" : "Play") + ""; })
+            })(); });
+            $$e(par, "div", function ($) { return (function () { return {"class": ["bpm-slider"]}; }).call($, ); }, null, null, function (par) { (function () {
+                $$e(par, "p", function ($) { return (function () { return {}; }).call($, ); }, null, null, function (par) { (function () {
+                    $$e(par, "text", function () { return "BPM"; })
+                })(); });
+                $$e(par, "input", function ($) { return (function () { return {"type": "range", "min": "60", "max": "200"}; }).call($, ); }, {"change": function ($e) { (function ($) { (function () { state.bpm = $e.target.value; { }; $sync() }).call($) })($e.target.__adomState || $); }}, null);
+            })(); });
+        })(); });
+        $$e(par, "div", function ($) { return (function () { return {"class": ["padrows"]}; }).call($, ); }, null, null, function (par) { (function () {
+            $$e(par, "div", function ($) { return (function () { return {}; }).call($, ); }, null, null);
+            $$e(par, "div", function ($) { return (function () { return {"class": ["column-containers"]}; }).call($, ); }, null, null, function (par) { (function () {
+$$each([0, 1, 2, 3, 4, 5, 6, 7], function (num) {
+                    $$e(par, "div", function ($) { return (function () { return {"class": "" + ((state["currentColumn"] == num) ? "active" : "") + ""}; }).call($, ); }, null, null);
+});
+            })(); });
+$$each(state["tapped"], function (row, rowIndex) {
+                $$e(par, "div", function ($) { return (function () { return {"class": ["row"]}; }).call($, ); }, null, null, function (par) { (function () {
+                    $$e(par, "select", function ($) { return (function () { return {"value": state["names"][rowIndex]}; }).call($, ); }, {"change": function ($e) { (function ($) { (function () { changeInstrument(rowIndex, $e.target.value); { }; $sync() }).call($) })($e.target.__adomState || $); }}, null, function (par) { (function () {
+                        $$e(par, "option", function ($) { return (function () { return {"value": "kick"}; }).call($, ); }, null, null, function (par) { (function () {
+                            $$e(par, "text", function () { return "kick"; })
+                        })(); });
+                        $$e(par, "option", function ($) { return (function () { return {"value": "snare"}; }).call($, ); }, null, null, function (par) { (function () {
+                            $$e(par, "text", function () { return "snare"; })
+                        })(); });
+                        $$e(par, "option", function ($) { return (function () { return {"value": "hi-hat"}; }).call($, ); }, null, null, function (par) { (function () {
+                            $$e(par, "text", function () { return "hi-hat"; })
+                        })(); });
+                        $$e(par, "option", function ($) { return (function () { return {"value": "open-hat"}; }).call($, ); }, null, null, function (par) { (function () {
+                            $$e(par, "text", function () { return "o-hat"; })
+                        })(); });
+                        $$e(par, "option", function ($) { return (function () { return {"value": "tom1"}; }).call($, ); }, null, null, function (par) { (function () {
+                            $$e(par, "text", function () { return "tom 1"; })
+                        })(); });
+                        $$e(par, "option", function ($) { return (function () { return {"value": "tom2"}; }).call($, ); }, null, null, function (par) { (function () {
+                            $$e(par, "text", function () { return "tom 2"; })
+                        })(); });
+                    })(); });
+$$each(row, function (pad, padIndex) {
+                        $$push_props({"col": rowIndex, "pad": padIndex});
+                        $$e(par, "div", function ($) { return (function (col,pad) { return {"class": (state["tapped"][col][pad] ? "drumpad-active" : "drumpad")}; }).call($, $.col,$.pad); }, {"click": function ($e) { (function ($) { (function (col,pad) { state.tapped[col][pad] = !state.tapped[col][pad]; { $.col = col; $.pad = pad; }; $sync() }).call($, $.col,$.pad) })($e.target.__adomState || $); }}, $$class(typeof Pad === 'function' ? Pad : null, {"col": $$props[1]["col"], "pad": $$props[1]["pad"]}));
+                        $$pop_props();
+});
+                    $$e(par, "button", function ($) { return (function () { return {"class": ["clear"]}; }).call($, ); }, {"click": function ($e) { (function ($) { (function () { clearRow(rowIndex); { }; $sync() }).call($) })($e.target.__adomState || $); }}, null, function (par) { (function () {
+                        $$e(par, "text", function () { return "clear"; })
+                    })(); });
+                    $$e(par, "button", function ($) { return (function () { return {"class": ["clear"]}; }).call($, ); }, {"click": function ($e) { (function ($) { (function () { deleteRow(rowIndex); { }; $sync() }).call($) })($e.target.__adomState || $); }}, null, function (par) { (function () {
+                        $$e(par, "text", function () { return "X"; })
+                    })(); });
+                })(); });
+});
+        })(); });
+        $$e(par, "button", function ($) { return (function () { return {"id": "addrow"}; }).call($, ); }, {"click": function ($e) { (function ($) { (function () { addRow(); { }; $sync() }).call($) })($e.target.__adomState || $); }}, null, function (par) { (function () {
+            $$e(par, "text", function () { return "+ Add Instrument"; })
+        })(); });
+        $$e(par, "footer", function ($) { return (function () { return {}; }).call($, ); }, null, null, function (par) { (function () {
+            $$e(par, "p", function ($) { return (function () { return {}; }).call($, ); }, null, null, function (par) { (function () {
+                $$e(par, "text", function () { return "Design inspired by "; })
+                $$e(par, "a", function ($) { return (function () { return {"href": "https://n1k0.github.io/tinysynth/"}; }).call($, ); }, null, null, function (par) { (function () {
+                    $$e(par, "text", function () { return "@n1k0"; })
+                })(); });
+            })(); });
+            $$e(par, "p", function ($) { return (function () { return {}; }).call($, ); }, null, null, function (par) { (function () {
+                $$e(par, "text", function () { return "Copyright 2020"; })
+            })(); });
+        })(); });
+    })(); });
+    $$pop_props();
+      $$clean(par);
+      $$processed.pop();
+      //console.timeEnd('sync');
+      $$firstSync = false;
+   }
+      
+
+let instruments = [
+    (new Audio('https://raw.githubusercontent.com/n1k0/tinysynth/master/public/audio/kick-classic.wav')),
+    (new Audio('https://raw.githubusercontent.com/n1k0/tinysynth/master/public/audio/snare-block.wav')),
+    (new Audio('https://raw.githubusercontent.com/n1k0/tinysynth/master/public/audio/hihat-digital.wav')),
+    (new Audio('https://raw.githubusercontent.com/n1k0/tinysynth/master/public/audio/openhat-808.wav')),
+    (new Audio('https://raw.githubusercontent.com/n1k0/tinysynth/master/public/audio/tom-acoustic01.wav')),
+    (new Audio('https://raw.githubusercontent.com/n1k0/tinysynth/master/public/audio/tom-acoustic02.wav'))
+]
+
+state.instruments.push(instruments[0]);
+state.instruments.push(instruments[1]);
+state.instruments.push(instruments[2]);
+
+let columnCount = 8
+let timeout
+
+function songLoop () {
+    timeout = setTimeout(function () {
+        let column = (state.currentColumn + 1) % columnCount
+        state.tapped.forEach((row, i) => {
+            if (row[column]) {
+                const pad = state.instruments[i]
+                pad.pause()
+                pad.currentTime = 0
+                pad.play()
+            }
+        })
+        state.currentColumn = column;
+        songLoop()
+    }, 60000 / state.bpm)
+}
+
+function togglePlay (isPlaying) {
+    if (isPlaying) {
+        state.isPlaying = false
+        state.currentColumn = -1
+        clearTimeout(timeout)
+    } else {
+        isPlaying = true
+        currentColumn = -1
+        songLoop()
+    }
+}
+
+function addRow () {
+    state.tapped.push([false, false, false, false, false, false, false, false])
+    state.instruments.push((new Audio('https://s3-us-west-2.amazonaws.com/s.cdpn.io/152714/Kick_11.wav')))
+    state.names.push('kick')
+}
+
+function  deleteRow (rowIndex) {
+    state.tapped.splice(rowIndex, 1)
+    state.instruments.splice(rowIndex, 1)
+    state.names.splice(rowIndex, 1)
+}
+
+function clearRow (rowIndex) {
+    state.tapped[rowIndex] = [false, false, false, false, false, false, false, false]
+}
+
+function changeInstrument (row, instrument) {
+    let instrToReplace
+    let nameToReplace
+
+    switch (instrument) {
+      case 'kick':
+        instrToReplace = instruments[0]
+        nameToReplace = instrument
+        break
+      case 'snare':
+        instrToReplace = instruments[1]
+        nameToReplace = instrument
+        break
+      case 'hi-hat':
+        instrToReplace = instruments[2]
+        nameToReplace = instrument
+        break
+      case 'open-hat':
+        instrToReplace = instruments[3]
+        nameToReplace = instrument
+        break
+      case 'tom1':
+        instrToReplace = instruments[4]
+        nameToReplace = instrument
+        break
+      case 'tom2':
+        instrToReplace = instruments[5]
+        nameToReplace = instrument
+    }
+
+    state.instruments[row] = instrToReplace
+    state.names[row] = nameToReplace
+}
+  $sync();
+})($$adom_state.styles, $$adom_state.state)
+}</script><style></style><div id="adom-root-1524"><div><header><h1>BeatZ</h1><h4>By Jon Franco</h4></header><div class="tools"><button>Play</button><div class="bpm-slider"><p>BPM</p><input type="range" min="60" max="200"></div></div><div class="padrows"><div></div><div class="column-containers"><div class=""></div><div class=""></div><div class=""></div><div class=""></div><div class=""></div><div class=""></div><div class=""></div><div class=""></div></div><div class="row"><select value="kick"><option value="kick">kick</option><option value="snare">snare</option><option value="hi-hat">hi-hat</option><option value="open-hat">o-hat</option><option value="tom1">tom 1</option><option value="tom2">tom 2</option></select><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><button class="clear">clear</button><button class="clear">X</button></div><div class="row"><select value="snare"><option value="kick">kick</option><option value="snare">snare</option><option value="hi-hat">hi-hat</option><option value="open-hat">o-hat</option><option value="tom1">tom 1</option><option value="tom2">tom 2</option></select><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><button class="clear">clear</button><button class="clear">X</button></div><div class="row"><select value="hi-hat"><option value="kick">kick</option><option value="snare">snare</option><option value="hi-hat">hi-hat</option><option value="open-hat">o-hat</option><option value="tom1">tom 1</option><option value="tom2">tom 2</option></select><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><button class="clear">clear</button><button class="clear">X</button></div></div><button id="addrow">+ Add Instrument</button><footer><p>Design inspired by <a href="https://n1k0.github.io/tinysynth/">@n1k0</a></p><p>Copyright 2020</p></footer></div></div></body></html>
