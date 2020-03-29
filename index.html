@@ -1,209 +1,124 @@
-<html><head><style>button, p, h4{
-  font-family: 'Open Sans', sans-serif;
-  letter-spacing: 1px;
+<html><head><style>* {
+  box-sizing: border-box;
 }
 
-button{
+html {
+  font-weight: 400;
+  letter-spacing: -.05px;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont,
+  “Segoe UI”, “Roboto”, “Oxygen”,
+  “Ubuntu”, “Cantarell”, “Fira Sans”,
+  “Droid Sans”, “Helvetica Neue”, sans-serif;
+  color: white;
+}
+
+small {
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.b-radius {
+  border-radius: 5px;
+}
+
+
+button, select, input {
+  font-weight: bold;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
+  margin: 0;
+  min-width: 35px;
+  min-height: 35px;
+  max-height: 35px;
+  background: rgba(255, 255, 255, .15);
+  color: white;
+  border: none;
+  cursor: pointer;
   outline: none;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid rgb(33, 33, 33);
+}
+
+[type='range'] {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+select option {
+  color: black;
+}
+
+.fl-column { display: flex; flex-direction: column;}
+.fl { display: flex; }
+.fl-wrap { flex-wrap: wrap; }
+.fl-justify-between { justify-content: space-between; }
+.fl-justify-center { justify-content: center; }
+.fl-justify-end { justify-content: flex-end; }
+.fl-items-center { align-items: center; }
+.fl-1 { flex: 1; }
+
+.m-0 { margin: 0; }
+
+.bold { font-weight: bold; }
+
+.bg-black {
+  background: rgb(40, 40, 40);
+}
+.bg-dark {
+  background:rgba(255, 255, 255, .15);
+}
+.bg-mid {
+  background: rgba(255, 255, 255, .25);
+}
+.bg-light {
+  background: rgba(255, 255, 255, .85);
+}
+.bg-primary {
+  background: rgb(59, 153, 217);
+}
+
+.bord-dark {
+  border: 1px solid rgb(40, 40, 40);
+}
+
+.pad-row:nth-child(4n + 1) {
+  margin-left: 10px;
+}
+
+.no-bg {
   background: transparent;
+}
+.no-border {
   border: none;
 }
-
-#app{
-  width: 650px;
-  min-width: 650px;
-  margin: 10px auto;
-  border-radius: 10px;
-  padding: 10px;
+/*
+.bord-mid {
+  border: 1px solid rgb(61, 61, 61);
 }
 
-header h1{
-  font-family: 'Permanent Marker', cursive;
-  width: 100%;
-  text-align: center;
-  color: #474747;
-  font-size: 53px;
-  margin-bottom: 0;
+.bord-light {
+  border: 1px solid rgb(100, 100, 100);
 }
 
-header h4{
-  width: 100%;
-  text-align: center;
-  margin-top: 0px;
-  margin-bottom: 30px;
-  font-size: 10px;
-}
-
-.tools{
-  background-color: #E8175D;
-  display: flex;
-  justify-content: space-around;
-  border-radius: 4px;
-  margin-bottom: 10px;
-}
-
-.tools button{
-  color: white;
-  cursor: pointer;
-  font-size: 12px;
-  border: 1px solid white;
-  height: 24px;
-  margin: auto 0;
-  border-radius: 2px;
-}
-
-.tools button:hover{
-  background-color: white;
-  color: #E8175D;
-  border: 1px solid white;
-}
-
-.padrows {
-  position: relative;
-}
-
-.padrows select{
-  margin-right: 10px;
-}
-
-.delete{
-  
-  margin-left: 4px;
-  background: transparent;
-  cursor: pointer;
-  font-size: 13px;
-  border: 1px solid black;
-  height: 22px;
-}
-.clear{
-  border: 1px solid black;
-  cursor: pointer;
-  margin-left: 8px;
-}
-
-.clear:hover, .delete:hover{
-  background-color: black;
-  color: white;
-  border: 1px solid black;
-}
-
-.drumpad, .drumpad-active{
-  background: #A8A7A8;
-  width: 50px;
-  height: 50px;
-  margin: 4px 4px;
-  border-radius: 3px;
-}
-
-.drumpad:nth-child(4n - 2), 
-.drumpad-active:nth-child(4n-2){
-  border-left: 4px solid #474747;
-  margin-left: 5px;
-}
-
-.drumpad-active{
-  background: #E8175D;
-}
-
-.drumpad-active {
-  animation: 100ms ease-in 0ms 1 bounce;
-}
-
-@keyframes bounce {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(0.88);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-.row {
-  margin: 5px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#addrow{
-  color: #E8175D;
-  margin-left: 40px;
-  display: block;
-  padding: 5px;
-  background: transparent;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-
-.drumpad:hover {
-  cursor: pointer;
-}
-
-.column-container {
-  position: absolute;
-  top: 0;
-  left: 72px;
-  bottom: 0;
-  /* background-color: blue; */
-  z-index: -1;
-  display: flex;
-  justify-content: center;
-  width: 77%;
-}
-
-.column:nth-child(4n-3){
-  border-left: 5px solid transparent;
-  margin-left: 1px;
-}
-
-.column {
-  width: 56px;
-  height: 100%;
-  float: left;
-  background: transparent;
-  /* background-color: green; */
-  margin: 0px 1px;
-  border-radius: 2px;
-}
-
-.active {
-  background: gray;
-}
-
-#bpm-slider{
-  display: flex;
-}
-
-#bpm-slider input{
-  margin-right: 10px;
-}
-
-#bpm-slider p{
-  width: 45px;
-  color: white;
-  font-size: 14px;
-}
-
-footer{
-  display: flex;
-  justify-content: space-between;
-  font-size: 10px;
-  border-top: 1px solid #474747;
-  margin-top: 22px;
-}
-
-footer p{
-  height: 20px;
-  margin-top: 4px;
-}</style></head><body><script>window.onload = function () {
-  var $$adom_state = {"styles":"button, p, h4{\n  font-family: 'Open Sans', sans-serif;\n  letter-spacing: 1px;\n}\n\nbutton{\n  outline: none;\n  background: transparent;\n  border: none;\n}\n\n#app{\n  width: 650px;\n  min-width: 650px;\n  margin: 10px auto;\n  border-radius: 10px;\n  padding: 10px;\n}\n\nheader h1{\n  font-family: 'Permanent Marker', cursive;\n  width: 100%;\n  text-align: center;\n  color: #474747;\n  font-size: 53px;\n  margin-bottom: 0;\n}\n\nheader h4{\n  width: 100%;\n  text-align: center;\n  margin-top: 0px;\n  margin-bottom: 30px;\n  font-size: 10px;\n}\n\n.tools{\n  background-color: #E8175D;\n  display: flex;\n  justify-content: space-around;\n  border-radius: 4px;\n  margin-bottom: 10px;\n}\n\n.tools button{\n  color: white;\n  cursor: pointer;\n  font-size: 12px;\n  border: 1px solid white;\n  height: 24px;\n  margin: auto 0;\n  border-radius: 2px;\n}\n\n.tools button:hover{\n  background-color: white;\n  color: #E8175D;\n  border: 1px solid white;\n}\n\n.padrows {\n  position: relative;\n}\n\n.padrows select{\n  margin-right: 10px;\n}\n\n.delete{\n  \n  margin-left: 4px;\n  background: transparent;\n  cursor: pointer;\n  font-size: 13px;\n  border: 1px solid black;\n  height: 22px;\n}\n.clear{\n  border: 1px solid black;\n  cursor: pointer;\n  margin-left: 8px;\n}\n\n.clear:hover, .delete:hover{\n  background-color: black;\n  color: white;\n  border: 1px solid black;\n}\n\n.drumpad, .drumpad-active{\n  background: #A8A7A8;\n  width: 50px;\n  height: 50px;\n  margin: 4px 4px;\n  border-radius: 3px;\n}\n\n.drumpad:nth-child(4n - 2), \n.drumpad-active:nth-child(4n-2){\n  border-left: 4px solid #474747;\n  margin-left: 5px;\n}\n\n.drumpad-active{\n  background: #E8175D;\n}\n\n.drumpad-active {\n  animation: 100ms ease-in 0ms 1 bounce;\n}\n\n@keyframes bounce {\n  0% {\n    transform: scale(1);\n  }\n  50% {\n    transform: scale(0.88);\n  }\n  100% {\n    transform: scale(1);\n  }\n}\n\n.row {\n  margin: 5px 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n#addrow{\n  color: #E8175D;\n  margin-left: 40px;\n  display: block;\n  padding: 5px;\n  background: transparent;\n  cursor: pointer;\n  font-size: 12px;\n}\n\n\n.drumpad:hover {\n  cursor: pointer;\n}\n\n.column-container {\n  position: absolute;\n  top: 0;\n  left: 72px;\n  bottom: 0;\n  /* background-color: blue; */\n  z-index: -1;\n  display: flex;\n  justify-content: center;\n  width: 77%;\n}\n\n.column:nth-child(4n-3){\n  border-left: 5px solid transparent;\n  margin-left: 1px;\n}\n\n.column {\n  width: 56px;\n  height: 100%;\n  float: left;\n  background: transparent;\n  /* background-color: green; */\n  margin: 0px 1px;\n  border-radius: 2px;\n}\n\n.active {\n  background: gray;\n}\n\n#bpm-slider{\n  display: flex;\n}\n\n#bpm-slider input{\n  margin-right: 10px;\n}\n\n#bpm-slider p{\n  width: 45px;\n  color: white;\n  font-size: 14px;\n}\n\nfooter{\n  display: flex;\n  justify-content: space-between;\n  font-size: 10px;\n  border-top: 1px solid #474747;\n  margin-top: 22px;\n}\n\nfooter p{\n  height: 20px;\n  margin-top: 4px;\n}","state":{"tapped":[[false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false]],"instruments":[],"names":["kick","snare","hi-hat"],"bpm":130,"isPlaying":false,"currentColumn":-1}};
+.bord-white {
+  border: 1px solid rgb(255, 255, 255);
+} */</style></head><script>window.onload = function () {
+  var $$adom_state = {"styles":"* {\n  box-sizing: border-box;\n}\n\nhtml {\n  font-weight: 400;\n  letter-spacing: -.05px;\n  -moz-osx-font-smoothing: grayscale;\n  -webkit-font-smoothing: antialiased;\n  font-smoothing: antialiased;\n  -webkit-tap-highlight-color: rgba(0,0,0,0);\n}\n\nbody {\n  margin: 0;\n  font-family: -apple-system, BlinkMacSystemFont,\n  “Segoe UI”, “Roboto”, “Oxygen”,\n  “Ubuntu”, “Cantarell”, “Fira Sans”,\n  “Droid Sans”, “Helvetica Neue”, sans-serif;\n  color: white;\n}\n\nsmall {\n  font-size: 11px;\n  font-weight: bold;\n}\n\n.b-radius {\n  border-radius: 5px;\n}\n\n\nbutton, select, input {\n  font-weight: bold;\n  padding-top: 10px;\n  padding-bottom: 10px;\n  padding-right: 10px;\n  padding-left: 10px;\n  margin: 0;\n  min-width: 35px;\n  min-height: 35px;\n  max-height: 35px;\n  background: rgba(255, 255, 255, .15);\n  color: white;\n  border: none;\n  cursor: pointer;\n  outline: none;\n  cursor: pointer;\n  border-radius: 5px;\n  border: 1px solid rgb(33, 33, 33);\n}\n\n[type='range'] {\n  padding-right: 0px;\n  padding-left: 0px;\n}\n\nselect option {\n  color: black;\n}\n\n.fl-column { display: flex; flex-direction: column;}\n.fl { display: flex; }\n.fl-wrap { flex-wrap: wrap; }\n.fl-justify-between { justify-content: space-between; }\n.fl-justify-center { justify-content: center; }\n.fl-justify-end { justify-content: flex-end; }\n.fl-items-center { align-items: center; }\n.fl-1 { flex: 1; }\n\n.m-0 { margin: 0; }\n\n.bold { font-weight: bold; }\n\n.bg-black {\n  background: rgb(40, 40, 40);\n}\n.bg-dark {\n  background:rgba(255, 255, 255, .15);\n}\n.bg-mid {\n  background: rgba(255, 255, 255, .25);\n}\n.bg-light {\n  background: rgba(255, 255, 255, .85);\n}\n.bg-primary {\n  background: rgb(59, 153, 217);\n}\n\n.bord-dark {\n  border: 1px solid rgb(40, 40, 40);\n}\n\n.pad-row:nth-child(4n + 1) {\n  margin-left: 10px;\n}\n\n.no-bg {\n  background: transparent;\n}\n.no-border {\n  border: none;\n}\n/*\n.bord-mid {\n  border: 1px solid rgb(61, 61, 61);\n}\n\n.bord-light {\n  border: 1px solid rgb(100, 100, 100);\n}\n\n.bord-white {\n  border: 1px solid rgb(255, 255, 255);\n} */","state":{"rowsConfig":[{"instrument":"kick_04","color":"rgb(39, 174, 96)"},{"instrument":"snare_06","color":"rgb(41, 128, 185)"},{"instrument":"hat_06","color":"rgb(142, 68, 173)"}],"rows":[[true,false,false,false,false,false,false,true,true,false,true,false,false,false,false,false],[false,false,false,false,true,false,false,false,false,false,false,false,true,false,false,false],[false,false,true,false,false,false,true,false,false,false,true,false,false,false,true,false]],"tempo":75,"isPlaying":false,"currColumn":-1}};
   
   var $$processed = [];
   var $$firstSync = true;
+  var $$syncing = false;
   var $$props = [];
 
   function $$push_props (props) {
@@ -329,190 +244,271 @@ footer p{
   (function (styles, state) {
   
   function $sync() {
-      var par = window["adom-root-1524"];
+    if ($$syncing === false) {
+      $$syncing = true;
+      var par = window["adom-root-3703"];
       var $ = undefined;
       //console.time('sync');
       $$processed.push(0);
-      $$push_props({});
-    $$e(par, "div", function ($) { return (function () { return {}; }).call($, ); }, null, $$class(typeof DrumPad === 'function' ? DrumPad : null, {}), function (par, $) { (function () {
-        $$e(par, "header", function ($) { return (function () { return {}; }).call($, ); }, null, null, function (par) { (function () {
-            $$e(par, "h1", function ($) { return (function () { return {}; }).call($, ); }, null, null, function (par) { (function () {
-                $$e(par, "text", function () { return "BeatZ"; })
-            })(); });
-            $$e(par, "h4", function ($) { return (function () { return {}; }).call($, ); }, null, null, function (par) { (function () {
-                $$e(par, "text", function () { return "By Jon Franco"; })
-            })(); });
-        })(); });
-        $$e(par, "div", function ($) { return (function () { return {"class": ["tools"]}; }).call($, ); }, null, null, function (par) { (function () {
-            $$e(par, "button", function ($) { return (function () { return {}; }).call($, ); }, {"click": function ($e) { (function ($) { (function () { togglePlay(state.isPlaying); { }; $sync() }).call($) })($e.target.__adomState || $); }}, null, function (par) { (function () {
-                $$e(par, "text", function () { return "" + (state["isPlaying"] ? "Stop" : "Play") + ""; })
-            })(); });
-            $$e(par, "div", function ($) { return (function () { return {"class": ["bpm-slider"]}; }).call($, ); }, null, null, function (par) { (function () {
-                $$e(par, "p", function ($) { return (function () { return {}; }).call($, ); }, null, null, function (par) { (function () {
-                    $$e(par, "text", function () { return "BPM"; })
+          $$e(par, "div", function ($) { return (function () { return {"class": ["fl-column", "fl-items-center"]}; }).call($, ); }, null, null, function (par) { (function () {
+        $$e(par, "div", function ($) { return (function () { return {}; }).call($, ); }, null, null, function (par) { (function () {
+            $$e(par, "div", function ($) { return (function () { return {"style": "margin: 10px 0px;", "class": ["fl", "fl-justify-between"]}; }).call($, ); }, null, null, function (par) { (function () {
+                $$e(par, "div", function ($) { return (function () { return {"class": ["fl-1", "fl", "fl-items-center"]}; }).call($, ); }, null, null, function (par) { (function () {
+                    $$e(par, "small", function ($) { return (function () { return {"style": "font-size: 12px; margin-left: 2px;"}; }).call($, ); }, null, null, function (par) { (function () {
+                        $$e(par, "text", function () { return "Beatz"; })
+                    })(); });
                 })(); });
-                $$e(par, "input", function ($) { return (function () { return {"type": "range", "min": "60", "max": "200"}; }).call($, ); }, {"change": function ($e) { (function ($) { (function () { state.bpm = $e.target.value; { }; $sync() }).call($) })($e.target.__adomState || $); }}, null);
-            })(); });
-        })(); });
-        $$e(par, "div", function ($) { return (function () { return {"class": ["padrows"]}; }).call($, ); }, null, null, function (par) { (function () {
-            $$e(par, "div", function ($) { return (function () { return {}; }).call($, ); }, null, null);
-            $$e(par, "div", function ($) { return (function () { return {"class": ["column-containers"]}; }).call($, ); }, null, null, function (par) { (function () {
-$$each([0, 1, 2, 3, 4, 5, 6, 7], function (num) {
-                    $$e(par, "div", function ($) { return (function () { return {"class": "" + ((state["currentColumn"] == num) ? "active" : "") + ""}; }).call($, ); }, null, null);
-});
-            })(); });
-$$each(state["tapped"], function (row, rowIndex) {
-                $$e(par, "div", function ($) { return (function () { return {"class": ["row"]}; }).call($, ); }, null, null, function (par) { (function () {
-                    $$e(par, "select", function ($) { return (function () { return {"value": state["names"][rowIndex]}; }).call($, ); }, {"change": function ($e) { (function ($) { (function () { changeInstrument(rowIndex, $e.target.value); { }; $sync() }).call($) })($e.target.__adomState || $); }}, null, function (par) { (function () {
-                        $$e(par, "option", function ($) { return (function () { return {"value": "kick"}; }).call($, ); }, null, null, function (par) { (function () {
-                            $$e(par, "text", function () { return "kick"; })
+                $$e(par, "button", function ($) { return (function () { return {"class": ["fl-1", "no-bg no-border"]}; }).call($, ); }, {"click": function ($e) { (function ($) { (function () { togglePlay(state.isPlaying); {}; $sync() }).call($) })($e.target.__adomState || $); }}, null, function (par) { (function () {
+                    $$if(state["isPlaying"], function () {
+                        $$e(par, "svg", function ($) { return (function () { return {"xmlns": "http://www.w3.org/2000/svg", "width": "35", "height": "35", "class": "svg-inline--fa fa-stop fa-w-14", "aria-hidden": "true", "data-prefix": "fas", "data-icon": "stop", "role": "img", "viewBox": "0 0 448 512", "data-fa-i2svg": ""}; }).call($, ); }, null, null, function (par) { (function () {
+                            $$e(par, "path", function ($) { return (function () { return {"fill": "rgb(255, 255, 255)", "d": "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48z"}; }).call($, ); }, null, null);
                         })(); });
-                        $$e(par, "option", function ($) { return (function () { return {"value": "snare"}; }).call($, ); }, null, null, function (par) { (function () {
-                            $$e(par, "text", function () { return "snare"; })
+                    }, function () {
+                        $$e(par, "svg", function ($) { return (function () { return {"xmlns": "http://www.w3.org/2000/svg", "width": "10", "height": "10", "class": "svg-inline--fa fa-play fa-w-14", "aria-hidden": "true", "data-prefix": "fas", "data-icon": "play", "role": "img", "viewBox": "0 0 448 512", "data-fa-i2svg": ""}; }).call($, ); }, null, null, function (par) { (function () {
+                            $$e(par, "path", function ($) { return (function () { return {"fill": "rgba(255, 255, 255, .9)", "d": "M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"}; }).call($, ); }, null, null);
                         })(); });
-                        $$e(par, "option", function ($) { return (function () { return {"value": "hi-hat"}; }).call($, ); }, null, null, function (par) { (function () {
-                            $$e(par, "text", function () { return "hi-hat"; })
-                        })(); });
-                        $$e(par, "option", function ($) { return (function () { return {"value": "open-hat"}; }).call($, ); }, null, null, function (par) { (function () {
-                            $$e(par, "text", function () { return "o-hat"; })
-                        })(); });
-                        $$e(par, "option", function ($) { return (function () { return {"value": "tom1"}; }).call($, ); }, null, null, function (par) { (function () {
-                            $$e(par, "text", function () { return "tom 1"; })
-                        })(); });
-                        $$e(par, "option", function ($) { return (function () { return {"value": "tom2"}; }).call($, ); }, null, null, function (par) { (function () {
-                            $$e(par, "text", function () { return "tom 2"; })
-                        })(); });
+                    });
+                })(); });
+                $$e(par, "div", function ($) { return (function () { return {"class": ["fl", "fl-items-center", "fl-justify-end", "fl-1"]}; }).call($, ); }, null, null, function (par) { (function () {
+                    $$e(par, "small", function ($) { return (function () { return {}; }).call($, ); }, null, null, function (par) { (function () {
+                        $$e(par, "text", function () { return "BPM"; })
                     })(); });
-$$each(row, function (pad, padIndex) {
-                        $$push_props({"col": rowIndex, "pad": padIndex});
-                        $$e(par, "div", function ($) { return (function (col,pad) { return {"class": (state["tapped"][col][pad] ? "drumpad-active" : "drumpad")}; }).call($, $.col,$.pad); }, {"click": function ($e) { (function ($) { (function (col,pad) { state.tapped[col][pad] = !state.tapped[col][pad]; { $.col = col; $.pad = pad; }; $sync() }).call($, $.col,$.pad) })($e.target.__adomState || $); }}, $$class(typeof Pad === 'function' ? Pad : null, {"col": $$props[1]["col"], "pad": $$props[1]["pad"]}));
-                        $$pop_props();
-});
-                    $$e(par, "button", function ($) { return (function () { return {"class": ["clear"]}; }).call($, ); }, {"click": function ($e) { (function ($) { (function () { clearRow(rowIndex); { }; $sync() }).call($) })($e.target.__adomState || $); }}, null, function (par) { (function () {
-                        $$e(par, "text", function () { return "clear"; })
+                    $$e(par, "input", function ($) { return (function () { return {"type": "range", "min": "50", "max": "160", "style": "margin: 0px 10px; width: 100px;", "value": state["tempo"]}; }).call($, ); }, {"input": function ($e) { (function ($) { (function () { state.tempo = parseInt($e.target.value); {}; $sync() }).call($) })($e.target.__adomState || $); }}, null);
+                    $$e(par, "small", function ($) { return (function () { return {"style": "width: 20px;"}; }).call($, ); }, null, null, function (par) { (function () {
+                        $$e(par, "text", function () { return "" + state["tempo"] + ""; })
                     })(); });
-                    $$e(par, "button", function ($) { return (function () { return {"class": ["clear"]}; }).call($, ); }, {"click": function ($e) { (function ($) { (function () { deleteRow(rowIndex); { }; $sync() }).call($) })($e.target.__adomState || $); }}, null, function (par) { (function () {
-                        $$e(par, "text", function () { return "X"; })
+                })(); });
+            })(); });
+$$each(state["rows"], function (row, a) {
+                $$e(par, "div", function ($) { return (function () { return {"class": ["fl"]}; }).call($, ); }, null, null, function (par) { (function () {
+                    $$e(par, "select", function ($) { return (function () { return {"style": "width: 80px;", "value": "" + state["rowsConfig"][a]["instrument"] + ""}; }).call($, ); }, {"change": function ($e) { (function ($) { (function () { changeInstrument(a, $e.target.value); {}; $sync() }).call($) })($e.target.__adomState || $); }}, null, function (par) { (function () {
+$$each(["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"], function (num) {
+                            $$e(par, "option", function ($) { return (function () { return {"value": "snare_" + num + ""}; }).call($, ); }, null, null, function (par) { (function () {
+                                $$e(par, "text", function () { return "snare_" + num + ""; })
+                            })(); });
+});
+$$each(["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"], function (num) {
+                            $$e(par, "option", function ($) { return (function () { return {"value": "kick_" + num + ""}; }).call($, ); }, null, null, function (par) { (function () {
+                                $$e(par, "text", function () { return "kick_" + num + ""; })
+                            })(); });
+});
+$$each(["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"], function (num) {
+                            $$e(par, "option", function ($) { return (function () { return {"value": "hat_" + num + ""}; }).call($, ); }, null, null, function (par) { (function () {
+                                $$e(par, "text", function () { return "hat_" + num + ""; })
+                            })(); });
+});
+                    })(); });
+                    $$e(par, "div", function ($) { return (function () { return {"class": ["fl"]}; }).call($, ); }, null, null, function (par) { (function () {
+$$each(row, function (col, b) {
+                            $$e(par, "button", function ($) { return (function () { return {"data-row": a, "data-col": b, "style": "background: " + (col ? state["rowsConfig"][a]["color"] : "") + "; opacity: " + ((b == state["currColumn"]) ? ".6" : "1") + ";", "class": ["pad-row"]}; }).call($, ); }, null, null);
+});
+                    })(); });
+                    $$e(par, "button", function ($) { return (function () { return {"style": "margin-left: 10px;"}; }).call($, ); }, {"click": function ($e) { (function ($) { (function () { deleteRow(a); {}; $sync() }).call($) })($e.target.__adomState || $); }}, null, function (par) { (function () {
+                        $$e(par, "small", function ($) { return (function () { return {"style": "font-size: 12px; line-height: 12px;"}; }).call($, ); }, null, null, function (par) { (function () {
+                            $$e(par, "text", function () { return "x"; })
+                        })(); });
                     })(); });
                 })(); });
 });
-        })(); });
-        $$e(par, "button", function ($) { return (function () { return {"id": "addrow"}; }).call($, ); }, {"click": function ($e) { (function ($) { (function () { addRow(); { }; $sync() }).call($) })($e.target.__adomState || $); }}, null, function (par) { (function () {
-            $$e(par, "text", function () { return "+ Add Instrument"; })
-        })(); });
-        $$e(par, "footer", function ($) { return (function () { return {}; }).call($, ); }, null, null, function (par) { (function () {
-            $$e(par, "p", function ($) { return (function () { return {}; }).call($, ); }, null, null, function (par) { (function () {
-                $$e(par, "text", function () { return "Design inspired by "; })
-                $$e(par, "a", function ($) { return (function () { return {"href": "https://n1k0.github.io/tinysynth/"}; }).call($, ); }, null, null, function (par) { (function () {
-                    $$e(par, "text", function () { return "@n1k0"; })
+            $$e(par, "div", function ($) { return (function () { return {}; }).call($, ); }, null, null, function (par) { (function () {
+                $$e(par, "button", function ($) { return (function () { return {"style": "width: 80px; margin-top: 10px;"}; }).call($, ); }, {"click": function ($e) { (function ($) { (function () { addRow(); {}; $sync() }).call($) })($e.target.__adomState || $); }}, null, function (par) { (function () {
+                    $$e(par, "small", function ($) { return (function () { return {"style": "font-size: 14px; line-height: 12px;"}; }).call($, ); }, null, null, function (par) { (function () {
+                        $$e(par, "text", function () { return "+"; })
+                    })(); });
                 })(); });
-            })(); });
-            $$e(par, "p", function ($) { return (function () { return {}; }).call($, ); }, null, null, function (par) { (function () {
-                $$e(par, "text", function () { return "Copyright 2020"; })
             })(); });
         })(); });
     })(); });
-    $$pop_props();
       $$clean(par);
       $$processed.pop();
       //console.timeEnd('sync');
       $$firstSync = false;
-   }
+      $$syncing = false;
+    }
+  }
       
 
-let instruments = [
-    (new Audio('https://raw.githubusercontent.com/n1k0/tinysynth/master/public/audio/kick-classic.wav')),
-    (new Audio('https://raw.githubusercontent.com/n1k0/tinysynth/master/public/audio/snare-block.wav')),
-    (new Audio('https://raw.githubusercontent.com/n1k0/tinysynth/master/public/audio/hihat-digital.wav')),
-    (new Audio('https://raw.githubusercontent.com/n1k0/tinysynth/master/public/audio/openhat-808.wav')),
-    (new Audio('https://raw.githubusercontent.com/n1k0/tinysynth/master/public/audio/tom-acoustic01.wav')),
-    (new Audio('https://raw.githubusercontent.com/n1k0/tinysynth/master/public/audio/tom-acoustic02.wav'))
-]
+const AudioContext = window.AudioContext || window.webkitAudioContext
+const audioCtx = new AudioContext()
+let timerID
+let nextNoteTime = 0
+let scheduleAheadTime = 0.1
+let lookAhead = 25
 
-state.instruments.push(instruments[0]);
-state.instruments.push(instruments[1]);
-state.instruments.push(instruments[2]);
+function playSample(audioContext, audioBuffer) {
+    const sampleSource = audioContext.createBufferSource()
+    
+    sampleSource.buffer = audioBuffer
+    sampleSource.playbackRate.setValueAtTime(1, audioCtx.currentTime)
+    sampleSource.connect(audioContext.destination)
+    sampleSource.start()
 
-let columnCount = 8
-let timeout
-
-function songLoop () {
-    timeout = setTimeout(function () {
-        let column = (state.currentColumn + 1) % columnCount
-        state.tapped.forEach((row, i) => {
-            if (row[column]) {
-                const pad = state.instruments[i]
-                pad.pause()
-                pad.currentTime = 0
-                pad.play()
-            }
-        })
-        state.currentColumn = column;
-        songLoop()
-    }, 60000 / state.bpm)
+    return sampleSource
 }
 
-function togglePlay (isPlaying) {
-    if (isPlaying) {
-        state.isPlaying = false
-        state.currentColumn = -1
-        clearTimeout(timeout)
+function scheduler () {
+    state.currColumn = (state.currColumn + 1) % state.rows[0].length
+    state.rows.forEach((row, rowI) => {
+      if (row[state.currColumn]) {
+        playSample(audioCtx, state.rowsConfig[rowI].sample)
+      }
+    })
+      
+    $sync()
+  
+    timerID = setTimeout(scheduler, 15000 / state.tempo)
+    
+    // todo: need to isolate bug in below
+    // while (nextNoteTime < audioCtx.currentTime + scheduleAheadTime) {
+    //     const secondsPerBeat = 15.0 / state.tempo
+    //     nextNoteTime += secondsPerBeat // Add beat length to last beat time
+        
+    //     state.currColumn = (state.currColumn + 1) % state.rows[0].length
+
+    //     state.rows.forEach((row, rowI) => {
+    //       if (row[state.currColumn]) {
+    //         playSample(audioCtx, state.rowsConfig[rowI].sample)
+    //       }
+    //     })
+        
+    //     $sync()
+    // }
+    // timerID = setTimeout(scheduler, lookAhead)
+}
+
+function togglePlay () {
+    if (state.isPlaying) {
+        clearTimeout(timerID)
+        state.currColumn = -1
     } else {
-        isPlaying = true
-        currentColumn = -1
-        songLoop()
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume()
+        }
+
+        nextNoteTime = audioCtx.currentTime
+        scheduler()
+    }
+    
+    state.isPlaying = !state.isPlaying
+}
+function modifyPadState (row, col) {
+    const target = ctrlDown ? false : true
+    const initial = target ? false : true
+
+    if (state.rows[row][col] === initial) {
+        state.rows[row][col] = target
+        $sync()
     }
 }
 
-function addRow () {
-    state.tapped.push([false, false, false, false, false, false, false, false])
-    state.instruments.push((new Audio('https://s3-us-west-2.amazonaws.com/s.cdpn.io/152714/Kick_11.wav')))
-    state.names.push('kick')
+let mouseDown = false
+let ctrlDown = false
+
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'Control') {
+        ctrlDown = true
+    }
+})
+
+window.addEventListener('keyup', (e) => {
+    if (e.key === 'Control') {
+        ctrlDown = false
+    }
+})
+
+window.addEventListener('mousedown', (e) => {
+    if (e.target.dataset.col && e.target.dataset.row) {
+        mouseDown = true
+
+        const col = parseInt(e.target.dataset.col)
+        const row = parseInt(e.target.dataset.row)
+        modifyPadState(row, col)
+    }
+})
+
+window.addEventListener('mousemove', (e) => {
+    if (e.target.dataset.col && e.target.dataset.row && mouseDown) {
+        const col = parseInt(e.target.dataset.col)
+        const row = parseInt(e.target.dataset.row)
+        modifyPadState(row, col)
+    }
+})
+
+window.addEventListener('mouseup', (e) => {
+    if (mouseDown) {
+        mouseDown = false
+    }
+})
+
+window.addEventListener('contextmenu', (e) => {
+    e.preventDefault()
+})
+
+let instruments = {}
+
+async function getFile(audioContext, filepath) {
+    console.log(filepath)
+    const response = await fetch(filepath);
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    return audioBuffer;
 }
 
-function  deleteRow (rowIndex) {
-    state.tapped.splice(rowIndex, 1)
-    state.instruments.splice(rowIndex, 1)
-    state.names.splice(rowIndex, 1)
-}
+async function setInstrument (index, instrument) {
+    if (!instruments[instrument]) {
+        const sample = await getFile(audioCtx, `./instruments/${instrument}.wav`)
+        instruments[instrument] = sample
+    }
 
-function clearRow (rowIndex) {
-    state.tapped[rowIndex] = [false, false, false, false, false, false, false, false]
+    let color
+    
+    if (instrument.indexOf('kick') !== -1) {
+        color = 'rgb(39, 174, 96)'
+    }
+
+    if (instrument.indexOf('snare') !== -1) {
+        color = 'rgb(41, 128, 185)'
+    }
+
+    if (instrument.indexOf('hat') !== -1) {
+        color = 'rgb(142, 68, 173)'
+    }
+
+    if (state.rowsConfig[index] === undefined) {
+        state.rowsConfig[index] = {}
+        state.rows.push([false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false])
+    } 
+
+    state.rowsConfig[index].instrument = instrument
+    state.rowsConfig[index].color = color
+    state.rowsConfig[index].sample = instruments[instrument]
 }
 
 function changeInstrument (row, instrument) {
-    let instrToReplace
-    let nameToReplace
-
-    switch (instrument) {
-      case 'kick':
-        instrToReplace = instruments[0]
-        nameToReplace = instrument
-        break
-      case 'snare':
-        instrToReplace = instruments[1]
-        nameToReplace = instrument
-        break
-      case 'hi-hat':
-        instrToReplace = instruments[2]
-        nameToReplace = instrument
-        break
-      case 'open-hat':
-        instrToReplace = instruments[3]
-        nameToReplace = instrument
-        break
-      case 'tom1':
-        instrToReplace = instruments[4]
-        nameToReplace = instrument
-        break
-      case 'tom2':
-        instrToReplace = instruments[5]
-        nameToReplace = instrument
-    }
-
-    state.instruments[row] = instrToReplace
-    state.names[row] = nameToReplace
+    setInstrument(row, instrument)
 }
+
+function addRow() {
+    setInstrument(state.rows.length, 'kick_01')   
+}
+
+function deleteRow (rowIndex) {
+    if (confirm('Are you sure you want to delete?')) {
+        state.rows.splice(rowIndex, 1)
+        state.rowsConfig.splice(rowIndex, 1)
+    }
+}
+
+function init () {
+    state.rowsConfig.forEach(async (row) => {
+        const sample = await getFile(audioCtx, `./instruments/${row.instrument}.wav`)
+
+        row.sample = sample
+        instruments[row.instrument] = sample
+    })
+}
+
+init()
   $sync();
 })($$adom_state.styles, $$adom_state.state)
-}</script><style></style><div id="adom-root-1524"><div><header><h1>BeatZ</h1><h4>By Jon Franco</h4></header><div class="tools"><button>Play</button><div class="bpm-slider"><p>BPM</p><input type="range" min="60" max="200"></div></div><div class="padrows"><div></div><div class="column-containers"><div class=""></div><div class=""></div><div class=""></div><div class=""></div><div class=""></div><div class=""></div><div class=""></div><div class=""></div></div><div class="row"><select value="kick"><option value="kick">kick</option><option value="snare">snare</option><option value="hi-hat">hi-hat</option><option value="open-hat">o-hat</option><option value="tom1">tom 1</option><option value="tom2">tom 2</option></select><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><button class="clear">clear</button><button class="clear">X</button></div><div class="row"><select value="snare"><option value="kick">kick</option><option value="snare">snare</option><option value="hi-hat">hi-hat</option><option value="open-hat">o-hat</option><option value="tom1">tom 1</option><option value="tom2">tom 2</option></select><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><button class="clear">clear</button><button class="clear">X</button></div><div class="row"><select value="hi-hat"><option value="kick">kick</option><option value="snare">snare</option><option value="hi-hat">hi-hat</option><option value="open-hat">o-hat</option><option value="tom1">tom 1</option><option value="tom2">tom 2</option></select><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><div class="drumpad"></div><button class="clear">clear</button><button class="clear">X</button></div></div><button id="addrow">+ Add Instrument</button><footer><p>Design inspired by <a href="https://n1k0.github.io/tinysynth/">@n1k0</a></p><p>Copyright 2020</p></footer></div></div></body></html>
+}</script><style></style><body class="bg-black" id="adom-root-3703"><div class="fl-column fl-items-center"><div><div style="margin: 10px 0px;" class="fl fl-justify-between"><div class="fl-1 fl fl-items-center"><small style="font-size: 12px; margin-left: 2px;">Beatz</small></div><button class="fl-1 no-bg no-border"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" class="svg-inline--fa fa-play fa-w-14" aria-hidden="true" data-prefix="fas" data-icon="play" role="img" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="rgba(255, 255, 255, .9)" d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"></path></svg></button><div class="fl fl-items-center fl-justify-end fl-1"><small>BPM</small><input type="range" min="50" max="160" style="margin: 0px 10px; width: 100px;" value="75"><small style="width: 20px;">75</small></div></div><div class="fl"><select style="width: 80px;" value="kick_04"><option value="snare_01">snare_01</option><option value="snare_02">snare_02</option><option value="snare_03">snare_03</option><option value="snare_04">snare_04</option><option value="snare_05">snare_05</option><option value="snare_06">snare_06</option><option value="snare_07">snare_07</option><option value="snare_08">snare_08</option><option value="snare_09">snare_09</option><option value="snare_10">snare_10</option><option value="kick_01">kick_01</option><option value="kick_02">kick_02</option><option value="kick_03">kick_03</option><option value="kick_04">kick_04</option><option value="kick_05">kick_05</option><option value="kick_06">kick_06</option><option value="kick_07">kick_07</option><option value="kick_08">kick_08</option><option value="kick_09">kick_09</option><option value="kick_10">kick_10</option><option value="hat_01">hat_01</option><option value="hat_02">hat_02</option><option value="hat_03">hat_03</option><option value="hat_04">hat_04</option><option value="hat_05">hat_05</option><option value="hat_06">hat_06</option><option value="hat_07">hat_07</option><option value="hat_08">hat_08</option><option value="hat_09">hat_09</option><option value="hat_10">hat_10</option></select><div class="fl"><button data-row="0" data-col="0" style="background: rgb(39, 174, 96); opacity: 1;" class="pad-row"></button><button data-row="0" data-col="1" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="0" data-col="2" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="0" data-col="3" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="0" data-col="4" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="0" data-col="5" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="0" data-col="6" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="0" data-col="7" style="background: rgb(39, 174, 96); opacity: 1;" class="pad-row"></button><button data-row="0" data-col="8" style="background: rgb(39, 174, 96); opacity: 1;" class="pad-row"></button><button data-row="0" data-col="9" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="0" data-col="10" style="background: rgb(39, 174, 96); opacity: 1;" class="pad-row"></button><button data-row="0" data-col="11" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="0" data-col="12" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="0" data-col="13" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="0" data-col="14" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="0" data-col="15" style="background: ; opacity: 1;" class="pad-row"></button></div><button style="margin-left: 10px;"><small style="font-size: 12px; line-height: 12px;">x</small></button></div><div class="fl"><select style="width: 80px;" value="snare_06"><option value="snare_01">snare_01</option><option value="snare_02">snare_02</option><option value="snare_03">snare_03</option><option value="snare_04">snare_04</option><option value="snare_05">snare_05</option><option value="snare_06">snare_06</option><option value="snare_07">snare_07</option><option value="snare_08">snare_08</option><option value="snare_09">snare_09</option><option value="snare_10">snare_10</option><option value="kick_01">kick_01</option><option value="kick_02">kick_02</option><option value="kick_03">kick_03</option><option value="kick_04">kick_04</option><option value="kick_05">kick_05</option><option value="kick_06">kick_06</option><option value="kick_07">kick_07</option><option value="kick_08">kick_08</option><option value="kick_09">kick_09</option><option value="kick_10">kick_10</option><option value="hat_01">hat_01</option><option value="hat_02">hat_02</option><option value="hat_03">hat_03</option><option value="hat_04">hat_04</option><option value="hat_05">hat_05</option><option value="hat_06">hat_06</option><option value="hat_07">hat_07</option><option value="hat_08">hat_08</option><option value="hat_09">hat_09</option><option value="hat_10">hat_10</option></select><div class="fl"><button data-row="1" data-col="0" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="1" data-col="1" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="1" data-col="2" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="1" data-col="3" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="1" data-col="4" style="background: rgb(41, 128, 185); opacity: 1;" class="pad-row"></button><button data-row="1" data-col="5" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="1" data-col="6" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="1" data-col="7" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="1" data-col="8" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="1" data-col="9" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="1" data-col="10" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="1" data-col="11" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="1" data-col="12" style="background: rgb(41, 128, 185); opacity: 1;" class="pad-row"></button><button data-row="1" data-col="13" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="1" data-col="14" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="1" data-col="15" style="background: ; opacity: 1;" class="pad-row"></button></div><button style="margin-left: 10px;"><small style="font-size: 12px; line-height: 12px;">x</small></button></div><div class="fl"><select style="width: 80px;" value="hat_06"><option value="snare_01">snare_01</option><option value="snare_02">snare_02</option><option value="snare_03">snare_03</option><option value="snare_04">snare_04</option><option value="snare_05">snare_05</option><option value="snare_06">snare_06</option><option value="snare_07">snare_07</option><option value="snare_08">snare_08</option><option value="snare_09">snare_09</option><option value="snare_10">snare_10</option><option value="kick_01">kick_01</option><option value="kick_02">kick_02</option><option value="kick_03">kick_03</option><option value="kick_04">kick_04</option><option value="kick_05">kick_05</option><option value="kick_06">kick_06</option><option value="kick_07">kick_07</option><option value="kick_08">kick_08</option><option value="kick_09">kick_09</option><option value="kick_10">kick_10</option><option value="hat_01">hat_01</option><option value="hat_02">hat_02</option><option value="hat_03">hat_03</option><option value="hat_04">hat_04</option><option value="hat_05">hat_05</option><option value="hat_06">hat_06</option><option value="hat_07">hat_07</option><option value="hat_08">hat_08</option><option value="hat_09">hat_09</option><option value="hat_10">hat_10</option></select><div class="fl"><button data-row="2" data-col="0" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="2" data-col="1" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="2" data-col="2" style="background: rgb(142, 68, 173); opacity: 1;" class="pad-row"></button><button data-row="2" data-col="3" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="2" data-col="4" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="2" data-col="5" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="2" data-col="6" style="background: rgb(142, 68, 173); opacity: 1;" class="pad-row"></button><button data-row="2" data-col="7" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="2" data-col="8" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="2" data-col="9" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="2" data-col="10" style="background: rgb(142, 68, 173); opacity: 1;" class="pad-row"></button><button data-row="2" data-col="11" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="2" data-col="12" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="2" data-col="13" style="background: ; opacity: 1;" class="pad-row"></button><button data-row="2" data-col="14" style="background: rgb(142, 68, 173); opacity: 1;" class="pad-row"></button><button data-row="2" data-col="15" style="background: ; opacity: 1;" class="pad-row"></button></div><button style="margin-left: 10px;"><small style="font-size: 12px; line-height: 12px;">x</small></button></div><div><button style="width: 80px; margin-top: 10px;"><small style="font-size: 14px; line-height: 12px;">+</small></button></div></div></div></body></html>
