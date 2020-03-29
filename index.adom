@@ -1,87 +1,39 @@
+import 'globals.adom'
+import 'loop.adom'
+
 const styles = file 'main.css'
 
-const PRIMARY = 'rgb(59, 153, 217)'
-
 var state = {
-    tapped: [
-        [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
-        [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
-        [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+    rowsConfig: [
+        {
+            instrument: 'kick_04',
+            color: 'rgb(39, 174, 96)'
+
+        }, {
+            instrument: 'snare_06',
+            color: 'rgb(41, 128, 185)'
+        }, {
+            instrument: 'hat_06',
+            color: 'rgb(142, 68, 173)'
+        }
     ],
-    instruments: [],
-    names: [
-        'kick_01',
-        'snare_01',
-        'hat_01'
+    rows: [
+        [true, false, false, false, false, false, false, true, true, false, true, false, false, false, false, false],
+        [false, false, false, false, true, false, false, false, false, false, false, false, true, false, false, false],
+        [false, false, true, false, false, false, true, false, false, false, true, false, false, false, true, false]
     ],
-    bpm: 130,
+    tempo: 75,
     isPlaying: false,
-    currentColumn: -1
+    currColumn: -1
 }
 
 --
-state.names.forEach(instrument => {
-    state.instruments.push(new Audio(`./instruments/${instrument}.wav`))
-})
-
-let columnCount = state.tapped[0].length
-let timeout
-
-function songLoop () {
-    timeout = setInterval(function () {
-        let column = (state.currentColumn + 1) % columnCount
-        state.tapped.forEach((row, i) => {
-            if (row[column]) {
-                const pad = state.instruments[i]
-                pad.pause()
-                pad.currentTime = 0
-                pad.play()
-            }
-        })
-        state.currentColumn = column;
-        $sync()
-    }, 15000 / state.bpm)
-}
-
-function togglePlay (isPlaying) {
-    if (isPlaying) {
-        state.isPlaying = false
-        state.currentColumn = -1
-        clearTimeout(timeout)
-    } else {
-        state.isPlaying = true
-        currentColumn = -1
-        state.instruments.forEach(instrument => {
-            instrument.pause()
-            instrument.currentTime = 0
-        })
-        songLoop()
-    }
-}
-
-function addRow () {
-    state.tapped.push([false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false])
-    state.instruments.push((new Audio('https://s3-us-west-2.amazonaws.com/s.cdpn.io/152714/Kick_11.wav')))
-    state.names.push('kick')
-}
-
-function deleteRow (rowIndex) {
-    state.tapped.splice(rowIndex, 1)
-    state.instruments.splice(rowIndex, 1)
-    state.names.splice(rowIndex, 1)
-}
-
-function changeInstrument (row, instrument) {
-    state.instruments[row] = new Audio(`./instruments/${instrument}.wav`)
-    state.names[row] = instrument
-}
-
 function modifyPadState (row, col) {
     const target = ctrlDown ? false : true
     const initial = target ? false : true
 
-    if (state.tapped[col][row] === initial) {
-        state.tapped[col][row] = target
+    if (state.rows[row][col] === initial) {
+        state.rows[row][col] = target
         $sync()
     }
 }
@@ -123,105 +75,152 @@ window.addEventListener('mouseup', (e) => {
     if (mouseDown) {
         mouseDown = false
     }
-    
 })
 
 window.addEventListener('contextmenu', (e) => {
     e.preventDefault()
 })
---
 
-tag Pad [ 
-    var col = props.col
-    var pad = props.pad
+let instruments = {}
 
-    css [
-        margin-left '5px'
-        border '1px solid rgb(33, 33, 33)'
-        '&:nth-child(4n - 3)' [
-            margin-left '10px' 
-        ]
-    ]
+async function getFile(audioContext, filepath) {
+    console.log(filepath)
+    const response = await fetch(filepath);
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    return audioBuffer;
+}
+
+async function setInstrument (index, instrument) {
+    if (!instruments[instrument]) {
+        const sample = await getFile(audioCtx, `./instruments/${instrument}.wav`)
+        instruments[instrument] = sample
+    }
+
+    let color
     
-    button
-        data-row={pad}
-        data-col={col}
-        data-type={props.type}
-        style='background: {{state.tapped[col][pad] ? PRIMARY : ""}}; opacity: {{pad == state.currentColumn ? ".6" : "1"}};'
-        []
-]
+    if (instrument.indexOf('kick') !== -1) {
+        color = 'rgb(39, 174, 96)'
+    }
+
+    if (instrument.indexOf('snare') !== -1) {
+        color = 'rgb(41, 128, 185)'
+    }
+
+    if (instrument.indexOf('hat') !== -1) {
+        color = 'rgb(142, 68, 173)'
+    }
+
+    if (state.rowsConfig[index] === undefined) {
+        state.rowsConfig[index] = {}
+        state.rows.push([false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false])
+    } 
+
+    state.rowsConfig[index].instrument = instrument
+    state.rowsConfig[index].color = color
+    state.rowsConfig[index].sample = instruments[instrument]
+}
+
+function changeInstrument (row, instrument) {
+    setInstrument(row, instrument)
+}
+
+function addRow() {
+    setInstrument(state.rows.length, 'kick_01')   
+}
+
+function deleteRow (rowIndex) {
+    if (confirm('Are you sure you want to delete?')) {
+        state.rows.splice(rowIndex, 1)
+        state.rowsConfig.splice(rowIndex, 1)
+    }
+}
+
+function init () {
+    state.rowsConfig.forEach(async (row) => {
+        const sample = await getFile(audioCtx, `./instruments/${row.instrument}.wav`)
+
+        row.sample = sample
+        instruments[row.instrument] = sample
+    })
+}
+
+init()
+--
 
 html [
     head [
         style "{{styles}}"
     ]
-    body class='bg-black' [
-        div style='position: relative; height: 100%;' root [
-            div class='bg-dark' style='padding: 10px 0px; margin-bottom: 10px; border-bottom: 1px solid rgb(33, 33, 33);' [
-                div class='fl' style='max-width: 800px; margin: 0 auto;' [
-                    div class='fl-1 fl fl-items-center' [
-                        p class='m-0 bold' style='margin-right: 5px;' "Beatz"
+    body class='bg-black' root [
+        div.fl-column.fl-items-center [
+            div [
+                div.fl.fl-justify-between style='margin: 10px 0px;' [
+                    div.fl-1.fl.fl-items-center [
+                        small style='font-size: 12px; margin-left: 2px;' 'Beatz'
                     ]
-                    div class='fl-1 fl fl-justify-center' [
-                        button
-                            class='bg-black'
-                            on:click="togglePlay(state.isPlaying)" [
-                                if (state.isPlaying) [
-                                    svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" class="svg-inline--fa fa-stop fa-w-14" aria-hidden="true" data-prefix="fas" data-icon="stop" role="img" viewBox="0 0 448 512" data-fa-i2svg="" [
-                                        path fill="rgb(255, 255, 255)" d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48z" []
-                                    ]
-                                ] else [
-                                    svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" class="svg-inline--fa fa-play fa-w-14" aria-hidden="true" data-prefix="fas" data-icon="play" role="img" viewBox="0 0 448 512" data-fa-i2svg="" [
-                                        path fill="rgba(255, 255, 255, .9)" d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z" []
-                                    ]
+                    button.fl-1
+                        class='no-bg no-border'
+                        on:click="togglePlay(state.isPlaying)" [
+                            if (state.isPlaying) [
+                                svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" class="svg-inline--fa fa-stop fa-w-14" aria-hidden="true" data-prefix="fas" data-icon="stop" role="img" viewBox="0 0 448 512" data-fa-i2svg="" [
+                                    path fill="rgb(255, 255, 255)" d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48z" []
+                                ]
+                            ] else [
+                                svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" class="svg-inline--fa fa-play fa-w-14" aria-hidden="true" data-prefix="fas" data-icon="play" role="img" viewBox="0 0 448 512" data-fa-i2svg="" [
+                                    path fill="rgba(255, 255, 255, .9)" d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z" []
                                 ]
                             ]
-                    ]
-                    div class='fl-1 fl fl-items-center fl-justify-end ' [
-                        small class='bold' style='margin-right: 10px;' "BPM"
+                        ]
+                    div.fl.fl-items-center.fl-justify-end.fl-1 [
+                        small 'BPM'
                         input
-                            class='bg-black'
-                            type='number'
-                            min='60'
-                            max='200'
-                            style='width: 60px;'
-                            value={state.bpm}
-                            on:change='state.bpm = $e.target.value' []
+                            type = 'range'
+                            min = '50'
+                            max = '160'
+                            style='margin: 0px 10px; width: 100px;'
+                            value={state.tempo}
+                            on:input='state.tempo = parseInt($e.target.value)'
+                            []
+                        small style='width: 20px;' '{{ state.tempo }}'
+                    ]
+                ]   
+                each (row, a in state.rows) [
+                    div.fl [
+                        select on:change='changeInstrument(a, $e.target.value)' style='width: 80px;' value='{{state.rowsConfig[a].instrument}}' [
+                            each (num in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']) [
+                                option value='snare_{{num}}' 'snare_{{num}}'
+                            ]
+                            each (num in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']) [
+                                option value='kick_{{num}}' 'kick_{{num}}'
+                            ]
+                            each (num in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']) [
+                                option value='hat_{{num}}' 'hat_{{num}}'
+                            ]
+                        ]
+                        div.fl [
+                            each (col, b in row) [
+                                button.pad-row
+                                    data-row={a}
+                                    data-col={b}
+                                    style='background: {{col ? state.rowsConfig[a].color : ""}}; opacity: {{b == state.currColumn ? ".6" : "1"}};'
+                                    []
+                            ]
+                        ]
+                        button on:click='deleteRow(a)' style='margin-left: 10px;' [
+                            small style='font-size: 12px; line-height: 12px;' 'x'
+                            // svg xmlns="http://www.w3.org/2000/svg" style="pointer-events: none;" width="10" height="10" class="svg-inline--fa fa-trash fa-w-14" aria-hidden="true" data-prefix="fas" data-icon="trash" role="img" viewBox="0 0 448 512" data-fa-i2svg="" [
+                            //     path fill="rgba(255, 255, 255, .9)" d="M0 84V56c0-13.3 10.7-24 24-24h112l9.4-18.7c4-8.2 12.3-13.3 21.4-13.3h114.3c9.1 0 17.4 5.1 21.5 13.3L312 32h112c13.3 0 24 10.7 24 24v28c0 6.6-5.4 12-12 12H12C5.4 96 0 90.6 0 84zm415.2 56.7L394.8 467c-1.6 25.3-22.6 45-47.9 45H101.1c-25.3 0-46.3-19.7-47.9-45L32.8 140.7c-.4-6.9 5.1-12.7 12-12.7h358.5c6.8 0 12.3 5.8 11.9 12.7z" []
+                            // ]
+                        ]
                     ]
                 ]
-            ]
-            div class='fl fl-justify-center' [
                 div [
-                    div [
-                        each (row, rowIndex in state.tapped) [
-                            div class='fl' style='margin-bottom: 5px;' [              
-                                select style='margin-right: 10px; width: 80px;' value={state.names[rowIndex]} on:change='changeInstrument(rowIndex, $e.target.value)' [
-                                    option value='kick_01' 'kick_01'
-                                    option value='snare_01' 'snare_01'
-                                    option value='snare_02' 'snare_02'
-                                    option value='snare_03' 'snare_03'
-                                    option value='snare_04' 'snare_04'
-                                    option value='snare_05' 'snare_05'
-                                    option value='hat_01' 'hat_01'
-                                    option value='hat_02' 'hat_02'
-                                ]
-                                div class='fl' [
-                                    each (pad, padIndex in row) [
-                                        Pad col={rowIndex} pad={padIndex} type={state.names[rowIndex]} []
-                                    ]
-                                ]
-                                button.clear on:click='deleteRow(rowIndex)' style='margin-left: 20px;' [
-                                    svg xmlns="http://www.w3.org/2000/svg" style="pointer-events: none;" width="10" height="10" class="svg-inline--fa fa-trash fa-w-14" aria-hidden="true" data-prefix="fas" data-icon="trash" role="img" viewBox="0 0 448 512" data-fa-i2svg="" [
-                                        path fill="rgba(255, 255, 255, .9)" d="M0 84V56c0-13.3 10.7-24 24-24h112l9.4-18.7c4-8.2 12.3-13.3 21.4-13.3h114.3c9.1 0 17.4 5.1 21.5 13.3L312 32h112c13.3 0 24 10.7 24 24v28c0 6.6-5.4 12-12 12H12C5.4 96 0 90.6 0 84zm415.2 56.7L394.8 467c-1.6 25.3-22.6 45-47.9 45H101.1c-25.3 0-46.3-19.7-47.9-45L32.8 140.7c-.4-6.9 5.1-12.7 12-12.7h358.5c6.8 0 12.3 5.8 11.9 12.7z" []
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                    button style='width: 80px; margin-top: 5px;' id='addrow' on:click='addRow()' [
-                        svg width='10' height='10' class="svg-inline--fa fa-plus fa-w-14" style="pointer-events: none; font-size: 12px;" aria-hidden="true" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" [
-                            path fill="rgba(255, 255, 255, .9)" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" []
-                        ]
+                    button style='width: 80px; margin-top: 10px;' on:click='addRow()' [
+                        small style='font-size: 14px; line-height: 12px;' '+'
+                        // svg width='10' height='10' class="svg-inline--fa fa-plus fa-w-14" style="pointer-events: none; font-size: 12px;" aria-hidden="true" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" [
+                        //     path fill="rgba(255, 255, 255, .9)" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" []
+                        // ]
                     ]
                 ]
             ]

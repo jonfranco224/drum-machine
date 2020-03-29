@@ -1,0 +1,63 @@
+--
+let timerID
+let nextNoteTime = 0
+let scheduleAheadTime = 0.1
+let lookAhead = 25
+
+function playSample(audioContext, audioBuffer) {
+    const sampleSource = audioContext.createBufferSource()
+    
+    sampleSource.buffer = audioBuffer
+    sampleSource.playbackRate.setValueAtTime(1, audioCtx.currentTime)
+    sampleSource.connect(audioContext.destination)
+    sampleSource.start()
+
+    return sampleSource
+}
+
+function scheduler () {
+    state.currColumn = (state.currColumn + 1) % state.rows[0].length
+    state.rows.forEach((row, rowI) => {
+      if (row[state.currColumn]) {
+        playSample(audioCtx, state.rowsConfig[rowI].sample)
+      }
+    })
+      
+    $sync()
+  
+    timerID = setTimeout(scheduler, 15000 / state.tempo)
+    
+    // todo: need to isolate bug in below
+    // while (nextNoteTime < audioCtx.currentTime + scheduleAheadTime) {
+    //     const secondsPerBeat = 15.0 / state.tempo
+    //     nextNoteTime += secondsPerBeat // Add beat length to last beat time
+        
+    //     state.currColumn = (state.currColumn + 1) % state.rows[0].length
+
+    //     state.rows.forEach((row, rowI) => {
+    //       if (row[state.currColumn]) {
+    //         playSample(audioCtx, state.rowsConfig[rowI].sample)
+    //       }
+    //     })
+        
+    //     $sync()
+    // }
+    // timerID = setTimeout(scheduler, lookAhead)
+}
+
+function togglePlay () {
+    if (state.isPlaying) {
+        clearTimeout(timerID)
+        state.currColumn = -1
+    } else {
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume()
+        }
+
+        nextNoteTime = audioCtx.currentTime
+        scheduler()
+    }
+    
+    state.isPlaying = !state.isPlaying
+}
+--

@@ -22,15 +22,20 @@ body {
 
 small {
   font-size: 11px;
+  font-weight: bold;
 }
 
 .b-radius {
   border-radius: 5px;
 }
 
+
 button, select, input {
   font-weight: bold;
-  padding: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
   margin: 0;
   min-width: 35px;
   min-height: 35px;
@@ -43,6 +48,11 @@ button, select, input {
   cursor: pointer;
   border-radius: 5px;
   border: 1px solid rgb(33, 33, 33);
+}
+
+[type='range'] {
+  padding-right: 0px;
+  padding-left: 0px;
 }
 
 select option {
@@ -80,6 +90,17 @@ select option {
 
 .bord-dark {
   border: 1px solid rgb(40, 40, 40);
+}
+
+.pad-row:nth-child(4n + 1) {
+  margin-left: 10px;
+}
+
+.no-bg {
+  background: transparent;
+}
+.no-border {
+  border: none;
 }
 /*
 .bord-mid {
