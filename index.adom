@@ -84,7 +84,6 @@ window.addEventListener('contextmenu', (e) => {
 let instruments = {}
 
 async function getFile(audioContext, filepath) {
-    console.log(filepath)
     const response = await fetch(filepath);
     const arrayBuffer = await response.arrayBuffer();
     const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
@@ -113,26 +112,29 @@ async function setInstrument (index, instrument) {
 
     if (state.rowsConfig[index] === undefined) {
         state.rowsConfig[index] = {}
-        state.rows.push([false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false])
-    } 
+        state.rows[index] = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+    }
 
     state.rowsConfig[index].instrument = instrument
     state.rowsConfig[index].color = color
     state.rowsConfig[index].sample = instruments[instrument]
+
+    $sync()
 }
 
-function changeInstrument (row, instrument) {
+function change (row, instrument) {
     setInstrument(row, instrument)
 }
 
-function addRow() {
-    setInstrument(state.rows.length, 'kick_01')   
+function add() {
+    setInstrument(state.rows.length, 'kick_01')  
 }
 
 function deleteRow (rowIndex) {
     if (confirm('Are you sure you want to delete?')) {
         state.rows.splice(rowIndex, 1)
         state.rowsConfig.splice(rowIndex, 1)
+        $sync()
     }
 }
 
@@ -187,15 +189,16 @@ html [
                 ]   
                 each (row, a in state.rows) [
                     div.fl [
-                        select on:change='changeInstrument(a, $e.target.value)' style='width: 80px;' value='{{state.rowsConfig[a].instrument}}' [
-                            each (num in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']) [
-                                option value='snare_{{num}}' 'snare_{{num}}'
-                            ]
+                        
+                        select style='width: 80px;' value='{{state.rowsConfig[a].instrument}}' on:change='change(a, $e.target.value)' nosync [
                             each (num in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']) [
                                 option value='kick_{{num}}' 'kick_{{num}}'
                             ]
                             each (num in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']) [
                                 option value='hat_{{num}}' 'hat_{{num}}'
+                            ]
+                            each (num in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']) [
+                                option value='snare_{{num}}' 'snare_{{num}}'
                             ]
                         ]
                         div.fl [
@@ -207,7 +210,7 @@ html [
                                     []
                             ]
                         ]
-                        button on:click='deleteRow(a)' style='margin-left: 10px;' [
+                        button on:click='deleteRow(a)' nosync style='margin-left: 10px;' [
                             small style='font-size: 12px; line-height: 12px;' 'x'
                             // svg xmlns="http://www.w3.org/2000/svg" style="pointer-events: none;" width="10" height="10" class="svg-inline--fa fa-trash fa-w-14" aria-hidden="true" data-prefix="fas" data-icon="trash" role="img" viewBox="0 0 448 512" data-fa-i2svg="" [
                             //     path fill="rgba(255, 255, 255, .9)" d="M0 84V56c0-13.3 10.7-24 24-24h112l9.4-18.7c4-8.2 12.3-13.3 21.4-13.3h114.3c9.1 0 17.4 5.1 21.5 13.3L312 32h112c13.3 0 24 10.7 24 24v28c0 6.6-5.4 12-12 12H12C5.4 96 0 90.6 0 84zm415.2 56.7L394.8 467c-1.6 25.3-22.6 45-47.9 45H101.1c-25.3 0-46.3-19.7-47.9-45L32.8 140.7c-.4-6.9 5.1-12.7 12-12.7h358.5c6.8 0 12.3 5.8 11.9 12.7z" []
@@ -216,7 +219,7 @@ html [
                     ]
                 ]
                 div [
-                    button style='width: 80px; margin-top: 10px;' on:click='addRow()' [
+                    button style='width: 80px; margin-top: 10px;' on:click='add()' nosync [
                         small style='font-size: 14px; line-height: 12px;' '+'
                         // svg width='10' height='10' class="svg-inline--fa fa-plus fa-w-14" style="pointer-events: none; font-size: 12px;" aria-hidden="true" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" [
                         //     path fill="rgba(255, 255, 255, .9)" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" []
