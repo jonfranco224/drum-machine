@@ -59,6 +59,10 @@ select option {
   color: black;
 }
 
+svg, i {
+  pointer-events: none;
+}
+
 .fl-column { display: flex; flex-direction: column;}
 .fl { display: flex; }
 .fl-wrap { flex-wrap: wrap; }

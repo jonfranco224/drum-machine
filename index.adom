@@ -28,6 +28,9 @@ var state = {
 }
 
 --
+const AudioContext = window.AudioContext || window.webkitAudioContext
+const audioCtx = new AudioContext()
+
 function modifyPadState (row, col) {
     const target = ctrlDown ? false : true
     const initial = target ? false : true
@@ -154,18 +157,17 @@ html [
     head [
         style "{{styles}}"
     ]
-    body class='bg-black' root [
+    body.bg-black root [
         div.fl-column.fl-items-center [
             div [
                 div.fl.fl-justify-between style='margin: 10px 0px;' [
                     div.fl-1.fl.fl-items-center [
                         small style='font-size: 12px; margin-left: 2px;' 'Beatz'
                     ]
-                    button.fl-1
-                        class='no-bg no-border'
+                    button.fl-1.no-bg.no-border
                         on:click="togglePlay(state.isPlaying)" [
                             if (state.isPlaying) [
-                                svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" class="svg-inline--fa fa-stop fa-w-14" aria-hidden="true" data-prefix="fas" data-icon="stop" role="img" viewBox="0 0 448 512" data-fa-i2svg="" [
+                                svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" class="svg-inline--fa fa-stop fa-w-14" aria-hidden="true" data-prefix="fas" data-icon="stop" role="img" viewBox="0 0 448 512" data-fa-i2svg="" [
                                     path fill="rgb(255, 255, 255)" d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48z" []
                                 ]
                             ] else [
@@ -189,7 +191,6 @@ html [
                 ]   
                 each (row, a in state.rows) [
                     div.fl [
-                        
                         select style='width: 80px;' value='{{state.rowsConfig[a].instrument}}' on:change='change(a, $e.target.value)' nosync [
                             each (num in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']) [
                                 option value='kick_{{num}}' 'kick_{{num}}'
@@ -211,19 +212,17 @@ html [
                             ]
                         ]
                         button on:click='deleteRow(a)' nosync style='margin-left: 10px;' [
-                            small style='font-size: 12px; line-height: 12px;' 'x'
-                            // svg xmlns="http://www.w3.org/2000/svg" style="pointer-events: none;" width="10" height="10" class="svg-inline--fa fa-trash fa-w-14" aria-hidden="true" data-prefix="fas" data-icon="trash" role="img" viewBox="0 0 448 512" data-fa-i2svg="" [
-                            //     path fill="rgba(255, 255, 255, .9)" d="M0 84V56c0-13.3 10.7-24 24-24h112l9.4-18.7c4-8.2 12.3-13.3 21.4-13.3h114.3c9.1 0 17.4 5.1 21.5 13.3L312 32h112c13.3 0 24 10.7 24 24v28c0 6.6-5.4 12-12 12H12C5.4 96 0 90.6 0 84zm415.2 56.7L394.8 467c-1.6 25.3-22.6 45-47.9 45H101.1c-25.3 0-46.3-19.7-47.9-45L32.8 140.7c-.4-6.9 5.1-12.7 12-12.7h358.5c6.8 0 12.3 5.8 11.9 12.7z" []
-                            // ]
+                            svg xmlns="http://www.w3.org/2000/svg" style="pointer-events: none;" width="10" height="10" class="svg-inline--fa fa-trash fa-w-14" aria-hidden="true" data-prefix="fas" data-icon="trash" role="img" viewBox="0 0 448 512" data-fa-i2svg="" [
+                                path fill="rgba(255, 255, 255, .9)" d="M0 84V56c0-13.3 10.7-24 24-24h112l9.4-18.7c4-8.2 12.3-13.3 21.4-13.3h114.3c9.1 0 17.4 5.1 21.5 13.3L312 32h112c13.3 0 24 10.7 24 24v28c0 6.6-5.4 12-12 12H12C5.4 96 0 90.6 0 84zm415.2 56.7L394.8 467c-1.6 25.3-22.6 45-47.9 45H101.1c-25.3 0-46.3-19.7-47.9-45L32.8 140.7c-.4-6.9 5.1-12.7 12-12.7h358.5c6.8 0 12.3 5.8 11.9 12.7z" []
+                            ]
                         ]
                     ]
                 ]
                 div [
                     button style='width: 80px; margin-top: 10px;' on:click='add()' nosync [
-                        small style='font-size: 14px; line-height: 12px;' '+'
-                        // svg width='10' height='10' class="svg-inline--fa fa-plus fa-w-14" style="pointer-events: none; font-size: 12px;" aria-hidden="true" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" [
-                        //     path fill="rgba(255, 255, 255, .9)" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" []
-                        // ]
+                        svg width='10' height='10' class="svg-inline--fa fa-plus fa-w-14" style="pointer-events: none; font-size: 12px;" aria-hidden="true" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" [
+                            path fill="rgba(255, 255, 255, .9)" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" []
+                        ]
                     ]
                 ]
             ]
